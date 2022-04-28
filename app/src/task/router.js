@@ -1,38 +1,30 @@
 const express = require('express')
-
+const Tasks = require('./Tasks')
 const router = express.Router()
 
-// === store == //
-var todoItems = [];
-todoItems.push({ index: 1, value: "learn react", done: false })
-todoItems.push({ index: 2, value: "Go shopping", done: true })
-todoItems.push({ index: 3, value: "buy flowers", done: true })
-var index = 5;
+const tasks = new Tasks()
+tasks.add("learn react")
+tasks.add("Go shopping", true)
+tasks.add("Go shopping", true)
+
 
 router.get('/task', (req, res) => {
-    return res.json({ data: todoItems, status: "success" })
+    return res.json({ data: tasks.tasks, status: "success" })
 })
 
-// create a task
 router.post('/task', (req, res) => {
-    todoItems.push({
-        index: index++,
-        value: req.body.value,
-        done: false,
-    })
-    return res.json({ data: todoItems, status: 'success' })
+    tasks.add(req.body.value)
+    return res.json({ data: tasks.tasks, status: 'success' })
 })
 
-// delete a task
 router.delete('/task/:id', (req, res) => {
-    var todoItems = todoItems.filter(d => d.index != +req.params.id)
-    return res.json({ data: todoItems, status: 'success' })
+    tasks.delete(req.params.id)
+    return res.json({ data: tasks.tasks, status: 'success' })
 })
 
-// update a task
 router.patch('/task/:id', (req, res) => {
-    todoItems.filter(d => d.index == +req.params.id)[0].done = req.body.done
-    return res.json({ data: todoItems, status: 'success' })
+    tasks.update(req.params.id, req.body.done)
+    return res.json({ data: tasks.tasks, status: 'success' })
 })
 
 module.exports = router
