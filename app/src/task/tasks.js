@@ -16,16 +16,16 @@ class Tasks {
 	}
 
 	get (id) {
-		return this.tasks.find(task => task.id === id)
+		return this.tasks.find(task => task.id == id)
 	}
 
 	delete (id) {
-		this.tasks = this.tasks.filter(task => task.id !== id)
+		this.tasks = this.tasks.filter(task => task.id != id)
 	}
 
 	update (id, done) {
-		const task = this.tasks.find(task => task.id === id)
-		task.done = done
+		const task = this.tasks.find(task => task.id == id)
+		task.done = done === 'true'
 	}
 }
 
